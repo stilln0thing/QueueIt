@@ -1,20 +1,29 @@
 package main
 
 import(
+    "log"
      "os"
     "QueueIt/routes"
-    "QueueIt/database"
+    database "QueueIt/database"
 	 "github.com/gin-gonic/gin"
+    models "QueueIt/models"
 )
 
 func main() {
    port := os.Getenv("PORT")
-
+   
    if port == "" {
 	 port = "3000"
    }
 
    database.InitDB()
+  
+    
+     err := database.DB.AutoMigrate(&models.User{})
+     if err != nil {
+         log.Fatalf("Failed to migrate models: %v", err)
+     }
+     log.Println("Database migration completed successfully.")
 
    router := gin.New()
    router.Use(gin.Logger())

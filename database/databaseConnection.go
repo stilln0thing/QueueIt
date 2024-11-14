@@ -28,20 +28,21 @@ func InitDB() {
     if postgresURL == "" {
         log.Fatal("POSTGRES_URL not found in environment")
     }
-
-   
+    log.Println(postgresURL)
     db, err := gorm.Open(postgres.Open(postgresURL), &gorm.Config{
         Logger: logger.Default.LogMode(logger.Info),
     })
+    fmt.Println(db)
     if err != nil {
         log.Fatalf("Error connecting to database: %v", err)
     }
 
-    // Configure the database connection pool
+    
     sqlDB, err := db.DB()
     if err != nil {
         log.Fatalf("Error configuring database connection pool: %v", err)
     }
+    fmt.Println(sqlDB)
 
     sqlDB.SetMaxIdleConns(10)               // Maximum idle connections
     sqlDB.SetMaxOpenConns(100)              // Maximum open connections
@@ -49,4 +50,5 @@ func InitDB() {
 
     fmt.Println("Connected to PostgreSQL using GORM!")
     DB = db
+    fmt.Println(DB)
 }
