@@ -44,9 +44,9 @@ func InitDB() {
     }
     fmt.Println(sqlDB)
 
-    sqlDB.SetMaxIdleConns(10)               // Maximum idle connections
-    sqlDB.SetMaxOpenConns(100)              // Maximum open connections
-    sqlDB.SetConnMaxLifetime(5 * time.Minute) // Lifetime of a connection
+    sqlDB.SetMaxIdleConns(10)               
+    sqlDB.SetMaxOpenConns(100)             
+    sqlDB.SetConnMaxLifetime(5 * time.Minute) 
 
     fmt.Println("Connected to PostgreSQL using GORM!")
     DB = db

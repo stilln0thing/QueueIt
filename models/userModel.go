@@ -16,15 +16,11 @@ type User struct {
 	Token         string         `gorm:"size:255"`
 	CreatedAt     time.Time      `gorm:"autoCreateTime"`
 	UpdatedAt     time.Time      `gorm:"autoUpdateTime"`
-	BusinessID    string         `gorm:"size:36;unique"`
 	CustomerID    string         `gorm:"size:36;unique"`
 	
 }
 
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
-    if u.BusinessID == "" {
-        u.BusinessID = uuid.New().String() 
-    }
     if u.CustomerID == "" {
         u.CustomerID = uuid.New().String() 
     }

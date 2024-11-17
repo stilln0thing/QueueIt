@@ -29,7 +29,7 @@ func GenerateAllTokens(email string, firstName string, lastName string) (signedT
 		
 	}
 
-	// Generate token using the secret key
+	// Generate token
 	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(SECRET_KEY))
 	if err != nil {
 		log.Panic(err)
@@ -39,7 +39,6 @@ func GenerateAllTokens(email string, firstName string, lastName string) (signedT
 	return token, err
 }
 
-// ValidateToken verifies the given JWT token
 func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
 	token, err := jwt.ParseWithClaims(
 		signedToken,

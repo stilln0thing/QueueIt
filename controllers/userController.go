@@ -13,12 +13,10 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// Use the initialized DB from the database package
 
 
 var validate = validator.New()
 
-// HashPassword hashes a given password using bcrypt.
 func HashPassword(password string) (string, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
@@ -27,19 +25,17 @@ func HashPassword(password string) (string, error) {
 	return string(hashedPassword), nil
 }
 
-// VerifyPassword compares a given password with a hashed password.
 func VerifyPassword(password, hashedPassword string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }
 
 
-// Signup handles user registration.
 func Signup() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		
 		var user models.User
         
-		// Bind JSON to the user struct and validate
+		
 		err := c.ShouldBindJSON(&user)
 		fmt.Println(err)	
 		if err != nil {
@@ -55,7 +51,7 @@ func Signup() gin.HandlerFunc {
 		}
 		token, _ := helper.GenerateAllTokens(user.Email, user.FirstName, user.LastName)
 		user.Token = token
-		// Hash the password
+		
 		hashedPassword, err := HashPassword(user.Password)
 		if err != nil {	
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to hash password"})
@@ -63,7 +59,7 @@ func Signup() gin.HandlerFunc {
 		}
 		user.Password = hashedPassword
 	
-		// Save the user in the database
+		
 		if result := database.DB.Create(&user); result.Error != nil {
 			fmt.Println(result.Error)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
@@ -74,7 +70,7 @@ func Signup() gin.HandlerFunc {
 	}
 }
 
-// Login handles user authentication.
+
 func Login() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var requestBody struct {
@@ -102,7 +98,7 @@ func Login() gin.HandlerFunc {
 	}
 }
 
-// GetUsers retrieves all users from the database.
+
 func GetUsers() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var users []models.User
@@ -116,7 +112,7 @@ func GetUsers() gin.HandlerFunc {
 	}
 }
 
-// GetUser retrieves a specific user based on the user ID.
+
 func GetUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		userId := c.Param("user_id")
